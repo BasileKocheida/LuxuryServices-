@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Candidat;
 use App\Form\CandidatType;
+use App\Form\UserType;
 use App\Repository\CandidatRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -63,18 +64,30 @@ class CandidatController extends AbstractController
      */
     public function edit(Request $request, Candidat $candidat): Response
     {
+        $user = $this->getUser();
+
         $form = $this->createForm(CandidatType::class, $candidat);
+        
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+
+            //traitement form avant l'enregistrement en BDD
+
+
+
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('candidat_index');
+            return $this->redirectToRoute('candidat_edit', [
+                'id' => $candidat->getId(),
+            ]);
         }
 
         return $this->render('candidat/edit.html.twig', [
             'candidat' => $candidat,
             'form' => $form->createView(),
+            'user' => $user,
         ]);
     }
 

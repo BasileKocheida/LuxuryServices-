@@ -20,57 +20,57 @@ class Candidat
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $first_name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $last_name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $country;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $cv;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $profile_picture;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $current_location;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $adress;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $nationality;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $availability;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $short_description;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $active;
 
@@ -84,13 +84,9 @@ class Candidat
      */
     private $experience;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="candidats")
-     */
-    private $user;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $passport;
 
@@ -103,6 +99,16 @@ class Candidat
      * @ORM\OneToMany(targetEntity=Candidature::class, mappedBy="candidat")
      */
     private $candidatures;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $birth_date;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $birth_place;
 
     public function __construct()
     {
@@ -270,17 +276,6 @@ class Candidat
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
 
     public function getPassport(): ?string
     {
@@ -332,6 +327,30 @@ class Candidat
                 $candidature->setCandidat(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBirthDate(): ?string
+    {
+        return $this->birth_date;
+    }
+
+    public function setBirthDate(?string $birth_date): self
+    {
+        $this->birth_date = $birth_date;
+
+        return $this;
+    }
+
+    public function getBirthPlace(): ?string
+    {
+        return $this->birth_place;
+    }
+
+    public function setBirthPlace(?string $birth_place): self
+    {
+        $this->birth_place = $birth_place;
 
         return $this;
     }

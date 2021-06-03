@@ -28,7 +28,7 @@
     </script>
         {% block stylesheets %}
         <link rel="shortcut icon" href="assets/img/luxury-services-logo.png">
-        <link href="../htdocs/assets/css/main.css" rel="stylesheet">
+        <link href="{{ asset ("assets/css/main.css")}}"rel="stylesheet">
 
     <link href="http://kys.idmkr.io/cache/assets/frontend.kys.materialize.a1042cadda540464eafd9350bb40433a_1547807689.css" rel="stylesheet">
     <link href="http://kys.idmkr.io/cache/assets/frontend.kys.bootstrap.457005dcd8ab887d5f47791eaa1e3a26_1547807834.css" rel="stylesheet">
@@ -96,32 +96,58 @@
                     </div>
                     <div class="nav-overlay" id="overlay">
                         <nav class="overlay-menu">
+                        
+
                             <ul>
                                 <li><a href="/">Home</a></li>
-                                <li><a href="/templates/jobs/index.html">Jobs Offers</a></li>
-                                <li><a href="/templates/compagny.html">About Us</a></li>
-                                <li><a href="/templates/contact.html">Contact</a></li>
+                                <li><a href="{{path('job_offer_index')}}">Jobs Offers</a></li>
+                                <li><a href="{{path('compagny_index')}}">About Us</a></li>
+                                <li><a href="{{path('contact_index')}}">Contact</a></li>
                                 <li>-</li>
-                                <li><a href="/templates/auth/profile.html">Profile</a></li>
+                                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                                <li><a href="{{ path ('candidat_edit' , {'id' :user.candidat.id})}}">Profile</a></li>
                                 <li><a href="/logout.html">Logout</a></li>
+                                {% endif %}
                             </ul>
+                       
                         </nav>
                     </div>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="menuzord-menu pull-right light" role="navigation">
-                        <li class=" dropdown">
-                            <a target="_self" href="/templates/auth/login.html">
-                                <span>Login</span>
-                            </a>
-                        </li>
-                        <li class=" dropdown">
-                            <a target="_self" href="/templates/auth/register.html" class="btn bn-lg gradient secondary btn-block waves-effect waves-light btn-register">
-                                <span>Sign Up</span>
-                            </a>
+                   
+                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
 
-                        </li>
-                    </ul>
+                             <ul class="menuzord-menu pull-right light" role="navigation">
+                                <li class=" dropdown">
+                                    <a target="_self" href="{{ path ('candidat_edit' , {'id' :user.candidat.id})}}">
+                                        <span>Profile</span>
+                                    </a>
+                                </li>
+                                <li class=" dropdown">
+                                    <a target="_self" href="{{ path ('app_logout')}}" class="btn bn-lg gradient secondary btn-block waves-effect waves-light btn-register">
+                                        <span>Logout</span>
+                                    </a>
+
+                                </li>
+                            </ul>
+
+                         {% else %}
+
+                            <ul class="menuzord-menu pull-right light" role="navigation">
+                                <li class=" dropdown">
+                                    <a target="_self" href="{{ path ('app_login')}}">
+                                        <span>Login</span>
+                                    </a>
+                                </li>
+                                <li class=" dropdown">
+                                    <a target="_self" href="{{ path ('app_register')}}" class="btn bn-lg gradient secondary btn-block waves-effect waves-light btn-register">
+                                        <span>Sign Up</span>
+                                    </a>
+
+                                </li>
+                            </ul>
+                         {% endif %}
+
                     <ul class="menuzord-menu pull-right light" role="navigation">
                         <li class="active dropdown">
                             <a target="_self" href="/">
@@ -130,19 +156,19 @@
                             </a>
                         </li>
                         <li class=" dropdown">
-                            <a target="_self" href="/templates/jobs/index.html">
+                            <a target="_self" href="{{path("job_offer_index")}}">
                                 <i class=""></i>
                                 <span>Jobs offers</span>
                             </a>
                         </li>
                         <li class=" dropdown">
-                            <a target="_self" href="/templates/compagny.html">
+                            <a target="_self" href="{{path('contact_index')}}">
                                 <i class=""></i>
                                 <span>About us</span>
                             </a>
                         </li>
                         <li class=" dropdown">
-                            <a target="_self" href="/templates/contact.html">
+                            <a target="_self" href="{{path('contact_index')}}">
                                 <i class=""></i>
                                 <span>Contact</span>
                             </a>
@@ -205,12 +231,12 @@
                     </a>
                 </li>
                 <li class=" dropdown">
-                    <a target="_self" href="/templates/compagny.html">
+                    <a target="_self" href="{{path('compagny_index')}}">
                         <span>About us</span>
                     </a>
                 </li>
                 <li class=" dropdown">
-                    <a target="_self" href="/templates/contact.html">
+                    <a target="_self" href="{{path('contact_index')}}">
                         <span>Contact</span>
                     </a>
                 </li>
