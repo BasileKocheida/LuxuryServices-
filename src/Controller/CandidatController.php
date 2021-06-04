@@ -4,12 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Candidat;
 use App\Form\CandidatType;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use App\Form\UserType;
 use App\Repository\CandidatRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @Route("/candidat")
@@ -62,7 +64,7 @@ class CandidatController extends AbstractController
     /**
      * @Route("/{id}/edit", name="candidat_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Candidat $candidat): Response
+    public function edit(Request $request, Candidat $candidat, SluggerInterface $slugger): Response
     {
         $user = $this->getUser();
 
@@ -70,7 +72,22 @@ class CandidatController extends AbstractController
         
         $form->handleRequest($request);
 
+        $cv = $form->get('cv')->getData();
+        $profile_picture = $form->get('profile_picture')->getData();
+        $passport = $form->get('passport')->getData();
+        $dataCandidat = $candidat->toArray();
+        $dataLength = count($dataCandidat);
+
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($cv !== null) {
+                $candidat->setCv($this->upload($cv, 'cv', $slugger));
+            }
+            if ($profile_picture !== null) {
+                $candidat->setProfilePicture($this->upload($profile_picture, 'profile_picture', $slugger));
+            }
+            if ($passport !== null) {
+                $candidat->setPassport($this->upload($passport, 'passport', $slugger));
+            }
 
 
             //traitement form avant l'enregistrement en BDD
@@ -88,6 +105,8 @@ class CandidatController extends AbstractController
             'candidat' => $candidat,
             'form' => $form->createView(),
             'user' => $user,
+            'dataCandidat'=> $dataCandidat,
+            'dataLength'=> $dataLength,
         ]);
     }
 
@@ -104,4 +123,28 @@ class CandidatController extends AbstractController
 
         return $this->redirectToRoute('candidat_index');
     }
+
+    public function upload($file, $target_directory ,$slugger){
+        if ($file) {
+                    $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                    // this is needed to safely include the file name as part of the URL
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
+
+                    // Move the file to the directory where brochures are stored
+                    try {
+                        $file->move(
+                            $this->getParameter($target_directory),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        // ... handle exception if something happens during file upload
+                    }
+
+                    // updates the 'brochureFilename' property to store the PDF file name
+                    // instead of its contents
+                    return $newFilename;
+                }
+
+        }
 }

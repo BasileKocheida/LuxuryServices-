@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CandidatRepository;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -69,10 +71,6 @@ class Candidat
      */
     private $short_description;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $active;
 
     /**
      * @ORM\ManyToOne(targetEntity=JobCategory::class, inversedBy="candidats")
@@ -91,7 +89,7 @@ class Candidat
     private $passport;
 
     /**
-     * @ORM\OneToOne(targetEntity=Gender::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Gender::class, cascade={"persist", "remove"})
      */
     private $gender;
 
@@ -101,9 +99,9 @@ class Candidat
     private $candidatures;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="date", nullable=true)
      */
-    private $birth_date;
+    private $birth_date; 
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -240,17 +238,6 @@ class Candidat
         return $this;
     }
 
-    public function getActive(): ?bool
-    {
-        return $this->active;
-    }
-
-    public function setActive(bool $active): self
-    {
-        $this->active = $active;
-
-        return $this;
-    }
 
     public function getJobCategory(): ?JobCategory
     {
@@ -331,12 +318,12 @@ class Candidat
         return $this;
     }
 
-    public function getBirthDate(): ?string
+    public function getBirthDate(): ?DateTimeInterface
     {
         return $this->birth_date;
     }
 
-    public function setBirthDate(?string $birth_date): self
+    public function setBirthDate(?DateTimeInterface $birth_date): self
     {
         $this->birth_date = $birth_date;
 
@@ -353,5 +340,24 @@ class Candidat
         $this->birth_place = $birth_place;
 
         return $this;
+    }
+
+    public function toArray(){
+        return ['gender'=>$this->getGender(),
+                'firstname'=>$this->getFirstName(), 
+                'lastname'=>$this->getLastName(), 
+                'adress' => $this->getAdress(), 
+                'country' => $this->getCountry(),
+                'nationality' => $this->getNationality(),
+                'cv' => $this->getCv(),
+                'profile_picture' => $this->getProfilePicture(),
+                'current_location' => $this->getCurrentLocation(),
+                'birth_date' => $this->getBirthDate(),
+                'birth_place' => $this->getBirthPlace(),
+                'short_description' => $this->getShortDescription(),
+                'experience' => $this->getExperience(),
+                'job_category' => $this->getJobCategory(),
+                'passport' => $this->getPassport()
+            ];
     }
 }

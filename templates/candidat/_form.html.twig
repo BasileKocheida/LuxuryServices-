@@ -1,4 +1,11 @@
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>.dropdown-content{
+        max-height: none;
+    } </style>
+{% endblock %}
+
 {{ form_start(form) }}
             <section class="section-padding">
                 <div class="container">
@@ -7,13 +14,8 @@
                         <div class="col-xs-12 col-sm-6 col-md-4">
 
                             <div class="input-field">
-                                <select id="gender" name="gender">
-                                    <option value="">Choose an option...</option>
-                                    <option value="male">Male</option>
-                                    <option value="female" selected="selected">Female</option>
-                                    <option value="transgender">Transgender</option>
-                                </select>
-                                <label for="gender" class="active">Gender</label>
+                               {{ form_widget(form.gender) }}
+                               {{ form_label(form.gender) }}
                             </div>
 
                         </div>
@@ -57,11 +59,12 @@
                                  style="margin-top: 32px;">
                                 <div class="btn btn-lg primary waves-effect waves-light">
                                     <span><i class="material-icons">insert_photo</i> Photo</span>
-                                    <input id="photo" size="20000000" accept=".pdf,.jpg,.doc,.docx,.png,.gif" name="photo" type="file">
+                                    {{ form_widget(form.profile_picture) }}
+                                    {{ form_label(form.profile_picture) }}
                                 </div>
 
                                 <div class="existing-file">
-                                    <a href="#!" target="_blank"><i class="material-icons">&#xE24D;</i> profil_picture.jpg</a>
+                                    <a href="{{ asset ('uploads/picture/' ~ candidat.profilePicture) }}" target="_blank"><i class="material-icons">&#xE24D;</i> profil_picture.jpg</a>
                                 </div>
                                 <div class="file-path-wrapper">
                                     <input class="file-path validate" type="text" placeholder="Upload your ID photo" readonly>
@@ -113,10 +116,11 @@
                                 <div class="file-field input-field">
                                     <div class="btn btn-lg primary waves-effect waves-light">
                                         <span><i class="material-icons">&#xE24D;</i> Passport</span>
-                                        <input id="passport" size="20000000" accept=".pdf,.jpg,.doc,.docx,.png,.gif" name="passport" type="file">
+                                        {{ form_widget(form.passport) }}
+                                        {{ form_label(form.passport) }}
                                     </div>
                                     <div class="existing-file">
-                                        <a href="#!" target="_blank"><i class="material-icons">&#xE24D;</i> passeport.jpg</a>
+                                        <a href="{{ asset ('uploads/passport/' ~ candidat.passport) }}" target="_blank"><i class="material-icons">&#xE24D;</i> passeport.jpg</a>
                                     </div>
                                     <div class="file-path-wrapper">
                                         <input class="file-path validate" type="text" placeholder="Upload your passport" readonly>
@@ -126,11 +130,12 @@
                                 <div class="file-field input-field">
                                     <div class="btn btn-lg primary waves-effect waves-light">
                                         <span><i class="material-icons">&#xE24D;</i> CV</span>
-                                        <input id="cv" size="20000000" accept=".pdf,.jpg,.doc,.docx,.png,.gif" name="cv" type="file">
+                                        {{ form_widget(form.cv) }}
+                                        {{ form_label(form.cv) }}
                                     </div>
 
                                     <div class="existing-file">
-                                        <a href="#!" target="_blank"><i class="material-icons">&#xE24D;</i> CV.pdf</a>
+                                        <a href="{{ asset ('uploads/cv/' ~ candidat.cv) }}" target="_blank"><i class="material-icons">&#xE24D;</i> CV.pdf</a>
                                     </div>
                                     <div class="file-path-wrapper">
                                         <input class="file-path validate" type="text" placeholder="Upload your Curriculum Vitae" readonly>
@@ -143,32 +148,28 @@
                         <div class="col-xs-12 col-sm-6">
                             <div class="col-xs-12 col-sm-12">
                                 <div class="input-field" style="margin-top: 5px;">
-                                    <select id="job_sector" name="job_sector[]" multiple data-placeholder="Type in or Select job sector you would be interested in.">
-                                        <option value="">Choose an option...</option>
-                                        <option value="">job sector</option>
-                                    </select>
-                                    <label for="job_sector" class="active">Interest in job sector</label>
+                                   {{ form_widget(form.job_category) }}
+                                    {{ form_label(form.job_category) }}
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-12">
                                 <div class="input-field">
-                                    <select id="experience" required="required" name="experience">
-                                        <option value="">Choose</option>
-                                        <option value="3m">0 - 6 month</option>
-                                        <option value="6m">6 month - 1 year</option>
-                                        <option value="1y">1 - 2 years</option>
-                                        <option value="2y">2+ years</option>
-                                        <option value="5y" selected="selected">5+ years</option>
-                                        <option value="10y">10+ years</option>
-                                    </select>
-                                    <label for="experience" class="active">Experience</label>
+                                    {{ form_widget(form.experience) }}
+                                    {{ form_label(form.experience) }}
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12">
+                                <div class="input-field">
+                                    {{ form_widget(form.availability) }}
+                                    {{ form_label(form.availability) }}
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12">
                             <div class="input-field">
-                                <textarea class="materialize-textarea" id="description" name="description" cols="50" rows="10"></textarea>
-                                <label for="description">Short description for your profile, as well as more personnal informations (e.g. your hobbies/interests ). You can also paste any link you want.</label>
+                                {{ form_widget(form.short_description) }}
+                                {{ form_label(form.short_description) }}
+                                {# <label for="description">Short description for your profile, as well as more personnal informations (e.g. your hobbies/interests ). You can also paste any link you want.</label> #}
                             </div>
                         </div>
                     </div>
@@ -223,3 +224,21 @@
             </section>
 
 {{ form_end(form) }}
+
+
+{% block javascripts %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+    <script>
+        $(document).ready(function(){
+            $('select').formSelect();
+        });
+    </script>
+    <script>
+        $('.datepicker').datepicker({
+            format: 'yyyy-mm-dd' });
+    </script>
+
+{% endblock %}
