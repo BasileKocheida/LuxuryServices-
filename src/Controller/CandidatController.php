@@ -2,10 +2,11 @@
 
 namespace App\Controller;
 
+
+
 use App\Entity\Candidat;
 use App\Form\CandidatType;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use App\Form\UserType;
 use App\Repository\CandidatRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,12 +15,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
- * @Route("/candidat")
+ * @Route("/")
  */
 class CandidatController extends AbstractController
 {
     /**
-     * @Route("/", name="candidat_index", methods={"GET"})
+     * @Route("/admin/candidat", name="candidat_index", methods={"GET"})
      */
     public function index(CandidatRepository $candidatRepository): Response
     {
@@ -29,7 +30,7 @@ class CandidatController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="candidat_new", methods={"GET","POST"})
+     * @Route("/admin/candidat/new", name="candidat_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
@@ -52,7 +53,7 @@ class CandidatController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="candidat_show", methods={"GET"})
+     * @Route("/admin/candidat/{id}", name="candidat_show", methods={"GET"})
      */
     public function show(Candidat $candidat): Response
     {
@@ -62,7 +63,7 @@ class CandidatController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="candidat_edit", methods={"GET","POST"})
+     * @Route("/candidat/{id}/edit", name="candidat_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Candidat $candidat, SluggerInterface $slugger): Response
     {
@@ -77,6 +78,7 @@ class CandidatController extends AbstractController
         $passport = $form->get('passport')->getData();
         $dataCandidat = $candidat->toArray();
         $dataLength = count($dataCandidat);
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($cv !== null) {
@@ -107,11 +109,12 @@ class CandidatController extends AbstractController
             'user' => $user,
             'dataCandidat'=> $dataCandidat,
             'dataLength'=> $dataLength,
+            'filledFieldCount'=> $candidat->getProfileCompletionPercent()
         ]);
     }
 
     /**
-     * @Route("/{id}", name="candidat_delete", methods={"POST"})
+     * @Route("/candidat/{id}", name="candidat_delete", methods={"POST"})
      */
     public function delete(Request $request, Candidat $candidat): Response
     {
@@ -146,5 +149,8 @@ class CandidatController extends AbstractController
                     return $newFilename;
                 }
 
-        }
+    }
+
+    
+
 }

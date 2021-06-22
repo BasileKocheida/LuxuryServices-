@@ -24,21 +24,18 @@
             </div>
         </section>
 
-        {% set fieldCount = 0 %}
-        {% for data in dataCandidat %}
-            {% if data != null %}
-                {% set fieldCount = fieldCount + 1 %}
-            {% endif %}
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
         {% endfor %}
-        {% set pourcentageCompleted = fieldCount * 100 / dataLength %}
-
 
         <!-- Page Content-->
         <section class="gray-bg">
             <div class="container">
                 <div class="row">
                     <div class="score-container">
-                        {% if pourcentageCompleted != 100 %}
+                    {% if filledFieldCount != 100 %}
                         <h4>
                             <img src="https://media.giphy.com/media/d10dMmzqCYqQ0/giphy.gif" style="height: 80px; width: 201px;"> &nbsp;
                             &nbsp; Your profile is not completed.
@@ -46,11 +43,11 @@
                     {% else %}
                         <h4>
                             <img src="https://i.imgur.com/s9bPVaK.gif" style="height: 80px; width: 201px;"> &nbsp;
-                            &nbsp; Hooray ! Your profile is complete.
+                            &nbsp; Hooray ! Your profile is completed.
                         </h4>
                     {% endif %}
-                        <div class="c100 p{{pourcentageCompleted|round}} small complete ">
-                            <span>{{pourcentageCompleted|round}}</span>
+                        <div class="c100 p{{filledFieldCount|round}} small complete ">
+                            <span>{{filledFieldCount|round}}%</span>
                             <div class="slice">
                                 <div class="bar"></div>
                                 <div class="fill"></div>

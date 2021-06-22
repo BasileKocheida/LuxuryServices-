@@ -3,7 +3,7 @@
 {% block title %}Experience index{% endblock %}
 
 {% block body %}
-    <h1>Experience index</h1>
+    <h1 style="padding-bottom:2rem; padding-top:10rem; background-color: #2F3138;text-align: center; color:white;margin-top:0">Experience index</h1>
 
     <table class="table">
         <thead>
@@ -31,5 +31,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('experience_new') }}">Create new</a>
+    <a href="{{ path('experience_new') }}">Create new</a><br>
+    <a href="{{ path('admin_index') }}">Return Admin Control</a>
 {% endblock %}

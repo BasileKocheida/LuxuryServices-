@@ -3,7 +3,8 @@
 {% block title %}Candidat{% endblock %}
 
 {% block body %}
-    <h1>Candidat</h1>
+<br><br><br>
+    <h1 style="padding-bottom:2rem; padding-top:10rem; background-color: #2F3138;text-align: center; color:white;margin-top:0">Candidat</h1>
 
     <table class="table">
         <tbody>
@@ -50,10 +51,6 @@
             <tr>
                 <th>Short_description</th>
                 <td>{{ candidat.shortDescription }}</td>
-            </tr>
-            <tr>
-                <th>Active</th>
-                <td>{{ candidat.active ? 'Yes' : 'No' }}</td>
             </tr>
             <tr>
                 <th>Passport</th>

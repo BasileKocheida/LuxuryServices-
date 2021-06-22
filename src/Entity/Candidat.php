@@ -21,6 +21,9 @@ class Candidat
      */
     private $id;
 
+
+    
+
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -73,12 +76,14 @@ class Candidat
 
 
     /**
-     * @ORM\ManyToOne(targetEntity=JobCategory::class, inversedBy="candidats")
+     * @ORM\ManyToOne(targetEntity=JobCategory::class, inversedBy="candidat")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $job_category;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Experience::class, inversedBy="candidats")
+     * @ORM\ManyToOne(targetEntity=Experience::class, inversedBy="candidat")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $experience;
 
@@ -89,7 +94,7 @@ class Candidat
     private $passport;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Gender::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Gender::class, inversedBy="candidat")
      */
     private $gender;
 
@@ -107,6 +112,20 @@ class Candidat
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $birth_place;
+
+
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, mappedBy="candidat", cascade={"persist", "remove"})
+     */
+    private $user;
+
+    /**
+     * @ORM\OneToMany(targetEntity=InfoAdminCandidat::class, mappedBy="candidat")
+     */
+    private $infoAdminCandidats;
+
+
+
 
     public function __construct()
     {
@@ -359,5 +378,24 @@ class Candidat
                 'job_category' => $this->getJobCategory(),
                 'passport' => $this->getPassport()
             ];
+    }
+
+    public function isProfileComplete()
+    {
+        return $this->getProfileCompletionPercent() === 100;
+    }
+
+    public function getProfileCompletionPercent()
+    {
+        $filledFieldCount = 0;
+        $fields = $this->toArray();
+
+        foreach($fields as $field) {
+            if (!empty($field)) {
+                $filledFieldCount++;
+            }
+        }
+
+        return $filledFieldCount * 100 / count($fields);
     }
 }

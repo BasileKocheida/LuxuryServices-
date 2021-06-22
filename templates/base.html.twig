@@ -26,9 +26,11 @@
             $(handler);
         }
     </script>
+
         {% block stylesheets %}
         <link rel="shortcut icon" href="assets/img/luxury-services-logo.png">
         <link href="{{ asset ("assets/css/main.css")}}"rel="stylesheet">
+        {# <link href="{{ asset ("assets/css/luxury.css")}}"rel="stylesheet"> #}
 
     <link href="http://kys.idmkr.io/cache/assets/frontend.kys.materialize.a1042cadda540464eafd9350bb40433a_1547807689.css" rel="stylesheet">
     <link href="http://kys.idmkr.io/cache/assets/frontend.kys.bootstrap.457005dcd8ab887d5f47791eaa1e3a26_1547807834.css" rel="stylesheet">
@@ -105,10 +107,11 @@
                                 <li><a href="{{path('contact_index')}}">Contact</a></li>
                                 <li>-</li>
                                 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                                <li><a href="{{ path ('candidat_edit' , {'id' :user.candidat.id})}}">Profile</a></li>
+                                <li><a href="{{ path ('candidat_edit' , {'id' :app.user.candidat.id})}}">Profile</a></li>
                                 <li><a href="/logout.html">Logout</a></li>
                                 {% endif %}
                             </ul>
+                       
                        
                         </nav>
                     </div>
@@ -119,7 +122,7 @@
 
                              <ul class="menuzord-menu pull-right light" role="navigation">
                                 <li class=" dropdown">
-                                    <a target="_self" href="{{ path ('candidat_edit' , {'id' :user.candidat.id})}}">
+                                    <a target="_self" href="{{ path ('candidat_edit' , {'id' :app.user.candidat.id})}}">
                                         <span>Profile</span>
                                     </a>
                                 </li>
@@ -129,6 +132,15 @@
                                     </a>
 
                                 </li>
+
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <li class=" dropdown">
+                                    <a target="_self" href="{{ path ('admin_index')}}" class="btn bn-lg gradient secondary btn-block waves-effect waves-light btn-register">
+                                        <span>Admin</span>
+                                    </a>
+
+                                </li>
+                                {% endif %}
                             </ul>
 
                          {% else %}
@@ -156,19 +168,19 @@
                             </a>
                         </li>
                         <li class=" dropdown">
-                            <a target="_self" href="{{path("job_offer_index")}}">
+                            <a target="_self" href="{{ path ("job_offer_index")}}">
                                 <i class=""></i>
                                 <span>Jobs offers</span>
                             </a>
                         </li>
                         <li class=" dropdown">
-                            <a target="_self" href="{{path('contact_index')}}">
+                            <a target="_self" href="{{ path ('compagny_index')}}">
                                 <i class=""></i>
                                 <span>About us</span>
                             </a>
                         </li>
                         <li class=" dropdown">
-                            <a target="_self" href="{{path('contact_index')}}">
+                            <a target="_self" href="{{ path ('contact_index')}}">
                                 <i class=""></i>
                                 <span>Contact</span>
                             </a>
@@ -176,8 +188,14 @@
                     </ul>
                 </div>
             </div>
+               
         </div>
     </div>
+    {% for message in app.flashes('success') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+    {% endfor %}
 </header>
 
         {% block javascripts %}

@@ -54,6 +54,7 @@ class CandidatType extends AbstractType
                 'empty_data' => '',
             ])
             ->add('availability')
+            
             ->add('short_description', TextType::class,[
                 'required' => false,
                 'empty_data' => '',

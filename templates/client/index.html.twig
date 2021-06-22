@@ -3,6 +3,7 @@
 {% block title %}Client index{% endblock %}
 
 {% block body %}
+<br><br><br>
     <h1>Client index</h1>
 
     <table class="table">
@@ -33,5 +34,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('client_new') }}">Create new</a>
+    <a href="{{ path('client_new') }}">Create new</a><br>
+    <a href="{{ path('admin_index') }}">Return Admin Control</a>
 {% endblock %}

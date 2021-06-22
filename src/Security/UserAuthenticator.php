@@ -30,6 +30,7 @@ class UserAuthenticator extends AbstractFormLoginAuthenticator implements Passwo
     private $urlGenerator;
     private $csrfTokenManager;
     private $passwordEncoder;
+    private $user;
 
     public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -72,7 +73,7 @@ class UserAuthenticator extends AbstractFormLoginAuthenticator implements Passwo
         if (!$user) {
             throw new UsernameNotFoundException('Email could not be found.');
         }
-
+        $this->user = $user;
         return $user;
     }
 
@@ -97,6 +98,12 @@ class UserAuthenticator extends AbstractFormLoginAuthenticator implements Passwo
 
         // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
         // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+        //REDIRECTION ADMIN INDEX
+        // $hasAccess = in_array('ROLE_ADMIN', $this->user->getRoles());
+        // if ($hasAccess) {
+        //     return new RedirectResponse($this->urlGenerator->generate('admin_index'));
+        // }
+
         return new RedirectResponse($this->urlGenerator->generate('home'));
     }
 
